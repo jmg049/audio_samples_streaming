@@ -1,0 +1,103 @@
+[package]
+name = "audio_samples_streaming"
+version = "0.1.0"
+edition = "2024"
+authors = ["Jack Geraghty <jgeraghty049@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+description = "Chunk-based audio streaming for Rust, built on audio_samples (core audio representation and processing) and audio_samples_io. Streams AudioSamples buffers through a unified AudioStream/AudioSink trait pair; WAV, FLAC, hardware devices, rodio, and async."
+repository = "https://github.com/jmg049/audio_samples_streaming"
+homepage = "https://github.com/jmg049/audio_samples_streaming"
+documentation = "https://docs.rs/audio_samples_streaming"
+keywords = ["audio", "streaming", "dsp", "wav", "cpal"]
+categories = ["multimedia", "multimedia::audio", "asynchronous"]
+exclude = ["/examples/*", "/benches/*", "/target/*", "*.wav", "*.flac"]
+
+[package.metadata.docs.rs]
+features = ["wav", "flac", "device", "rodio", "async"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+audio_samples = { version = "1.0.6", features = ["fixed-size-audio"] }
+audio_samples_io = { version = "0.2.0", default-features = false }
+thiserror = "2"
+non-empty-slice = "0.5"
+
+[dependencies.cpal]
+version = "0.17.3"
+optional = true
+
+[dependencies.rtrb]
+version = "0.3.4"
+optional = true
+
+[dependencies.libc]
+version = "0.2"
+optional = true
+
+[dependencies.rodio]
+version = "0.22.2"
+optional = true
+default-features = false
+features = ["playback"]
+
+[dependencies.futures-core]
+version = "0.3"
+optional = true
+
+[features]
+default = []
+wav   = ["audio_samples_io/wav"]
+flac  = ["audio_samples_io/flac"]
+device = ["dep:cpal", "dep:rtrb", "dep:libc"]
+rodio = ["dep:rodio"]
+async = ["dep:futures-core"]
+
+[[example]]
+name = "file_to_file"
+required-features = ["wav"]
+
+[[example]]
+name = "manual_loop"
+required-features = ["wav"]
+
+[[example]]
+name = "device_capture"
+required-features = ["device", "wav"]
+
+[[example]]
+name = "device_playback"
+required-features = ["device", "wav"]
+
+[[example]]
+name = "device_passthrough"
+required-features = ["device"]
+
+[[example]]
+name = "rodio_source"
+required-features = ["rodio", "wav"]
+
+[[example]]
+name = "async_stream"
+required-features = ["async", "wav"]
+
+[dev-dependencies]
+criterion = { version = "0.8.2" }
+
+[[bench]]
+name = "device_io"
+harness = false
+required-features = ["device"]
+
+[[bench]]
+name = "interleave"
+harness = false
+
+[profile.release]
+lto           = "thin"
+codegen-units = 1
+panic         = "abort"
+
+[profile.bench]
+inherits = "release"
+debug    = true

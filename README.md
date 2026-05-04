@@ -13,6 +13,29 @@
 
 Chunk-based audio streaming for Rust. Reads and writes [`AudioSamples`](https://docs.rs/audio_samples) buffers through a common trait interface; WAV files, FLAC files, hardware devices, rodio, and async runtimes all speak the same language.
 
+## The AudioSamples Ecosystem
+
+```text
+audio_samples
+├── core types, signal generation, DSP, analysis
+├── audio_samples_io
+│   └── file I/O: read and write WAV and FLAC
+├── audio_samples_python
+│   └── python bindings via PyO3
+├── audio_samples_streaming
+│   └── streaming pipeline, device I/O, rodio, async
+└── audio_samples_ml
+    └── STT and TTS integrations
+```
+
+| Crate | What it provides | Start here if... |
+|---|---|---|
+| [`audio_samples`](https://crates.io/crates/audio_samples) | `AudioSamples<T>`, core types, signal generation, DSP, analysis | You need in-memory audio representations or signal processing primitives |
+| [`audio_samples_io`](https://crates.io/crates/audio_samples_io) | Read and write WAV and FLAC files | You need to load or save audio files with minimal setup |
+| [`audio_samples_python`](https://crates.io/crates/audio_samples_python) | Python bindings via PyO3 and NumPy interop | You want to use the library from Python or integrate with Python workflows |
+| [`audio_samples_streaming`](https://crates.io/crates/audio_samples_streaming) | Chunk-based streaming, real-time device I/O, async pipelines | You need real-time audio processing or streaming pipelines |
+| [`audio_samples_ml`](https://crates.io/crates/audio_samples_ml) | Speech-to-text (STT) and text-to-speech (TTS) integrations | You want to integrate transcription or synthesis into your audio pipeline |
+
 ## Core concepts
 
 Two traits drive everything:

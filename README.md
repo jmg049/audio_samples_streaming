@@ -200,6 +200,24 @@ Run any example with `cargo run --example <name> --features <features>`:
 Contributions are welcome. Please submit a pull request and see
 [CONTRIBUTING.md](CONTRIBUTING.md) for guidance.
 
+## Citing
+
+If you use AudioSamples in research, please cite:
+
+```bibtex
+@inproceedings{geraghty2026audio,
+  author    = {Geraghty, Jack and Golpayegani, Fatemeh and Hines, Andrew},
+  title     = {Audio Made Simple: A Modern Framework for Audio Processing},
+  booktitle = {ACM Multimedia Systems Conference 2026 (MMSys '26)},
+  year      = {2026},
+  month     = apr,
+  publisher = {ACM},
+  address   = {Hong Kong, Hong Kong},
+  doi       = {10.1145/3793853.3799811},
+  note      = {Accepted for publication}
+}
+```
+
 [crate]: https://crates.io/crates/audio_samples_streaming
 [crate-img]: https://img.shields.io/crates/v/audio_samples_streaming?style=for-the-badge&color=009E73&label=crates.io
 

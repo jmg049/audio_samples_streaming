@@ -7,7 +7,6 @@ use audio_samples::AudioSamples;
 use audio_samples::traits::StandardSample;
 use audio_samples_io::ReadSeek;
 use audio_samples_io::error::AudioIOError;
-use audio_samples_io::traits::AudioFileMetadata;
 use audio_samples_io::wav::StreamedWavFile;
 
 use crate::traits::AudioStream;

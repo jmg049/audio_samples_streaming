@@ -25,8 +25,9 @@
 //! # Quick start
 //!
 //! Read `input.wav` chunk by chunk and write it to `output.wav`, using
-//! [`pipeline::run`] to drive the loop. Insert per-chunk processing between
-//! source and sink by writing a manual loop instead — see the `manual_loop` example.
+//! [`pipeline::run_finalized`] to drive the loop and finalize the sink. Insert
+//! per-chunk processing between source and sink by writing a manual loop
+//! instead — see the `manual_loop` example.
 //!
 //! ```no_run
 //! # #[cfg(feature = "wav")] {
@@ -35,7 +36,7 @@
 //! use audio_samples_streaming::{WavFileStream, WavFileSink, pipeline};
 //!
 //! let mut source = WavFileStream::<_, f32>::open("input.wav").unwrap();
-//! let mut sink   = WavFileSink::<_, f32>::create("output.wav",
+//! let sink = WavFileSink::<_, f32>::create("output.wav",
 //!     source.num_channels(), source.sample_rate()).unwrap();
 //!
 //! let mut buffer = AudioSamples::<f32>::zeros_multi_channel(
@@ -44,8 +45,7 @@
 //!     NonZeroU32::new(source.sample_rate()).unwrap(),
 //! );
 //!
-//! pipeline::run(&mut source, &mut sink, &mut buffer).unwrap();
-//! sink.finalize().unwrap();
+//! pipeline::run_finalized(&mut source, sink, &mut buffer).unwrap();
 //! # }
 //! ```
 //!

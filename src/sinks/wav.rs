@@ -104,7 +104,20 @@ impl<T: StandardSample + 'static> WavFileSink<BufWriter<File>, T> {
         sample_rate: u32,
         sample_type: audio_samples_io::ValidatedSampleType,
     ) -> Result<Self, AudioIOError> {
-        let inner = audio_samples_io::create_streamed(path, channels, sample_rate, sample_type)?;
+        use audio_samples_io::ValidatedSampleType;
+
+        let writer = BufWriter::new(File::create(path)?);
+        let inner = match sample_type {
+            // 8-bit output is widened to 16-bit, matching audio_samples_io's
+            // own dispatch for u8 streaming writes.
+            ValidatedSampleType::U8 | ValidatedSampleType::I16 => {
+                StreamedWavWriter::new_i16(writer, channels, sample_rate)?
+            }
+            ValidatedSampleType::I24 => StreamedWavWriter::new_i24(writer, channels, sample_rate)?,
+            ValidatedSampleType::I32 => StreamedWavWriter::new_i32(writer, channels, sample_rate)?,
+            ValidatedSampleType::F32 => StreamedWavWriter::new_f32(writer, channels, sample_rate)?,
+            ValidatedSampleType::F64 => StreamedWavWriter::new_f64(writer, channels, sample_rate)?,
+        };
         Ok(Self {
             inner,
             _marker: PhantomData,

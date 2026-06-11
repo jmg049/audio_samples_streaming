@@ -155,12 +155,12 @@ Both `DeviceCapture` and `DevicePlayback` are built for low-latency work:
 
 ## FLAC
 
-`FlacFileStream` decodes the full file into memory at construction, then streams from that buffer with no per-chunk allocation. This is appropriate for most file sizes; a 5-minute stereo 24-bit/48 kHz file is roughly 170 MB decoded as f32.
+`FlacFileStream` decodes FLAC frames incrementally as the pipeline consumes them — memory stays bounded by one FLAC block regardless of file length, the same model as `WavFileStream`.
 
 ```rust
 use audio_samples_streaming::FlacFileStream;
 
-let mut source = FlacFileStream::<f32>::open("input.flac")?;
+let mut source = FlacFileStream::<_, f32>::open("input.flac")?;
 println!("{} Hz  {} ch  {} frames", source.sample_rate(), source.channels(), source.total_frames());
 ```
 

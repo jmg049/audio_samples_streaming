@@ -18,10 +18,10 @@ features = ["wav", "flac", "device", "rodio", "async"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-audio_samples = { version = "1.0.6", features = ["fixed-size-audio"] }
-audio_samples_io = { version = "0.2.0", default-features = false }
+audio_samples = { version = "1.0.11", features = ["fixed-size-audio"] }
+audio_samples_io = { version = "0.3.2", default-features = false }
 thiserror = "2"
-non-empty-slice = "0.5"
+non-empty-slice = "0.6"
 
 [dependencies.cpal]
 version = "0.17.3"
@@ -101,3 +101,9 @@ panic         = "abort"
 [profile.bench]
 inherits = "release"
 debug    = true
+
+# Local development only — do not commit: tests need the unreleased
+# audio_samples_io WAV streaming-writer fix.
+[patch.crates-io]
+audio_samples_io = { path = "../audio_samples_io" }
+audio_samples = { path = "../audio_samples" }
